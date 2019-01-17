@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from '@alifd/next';
+import { Table, Pagination } from '@alifd/next';
 
 import request from '../../utils/request';
 
@@ -12,13 +12,20 @@ export default class Member extends Component {
     this.state = {
       loading: false,
       dataSource: [],
-      page: 1,
       size: 20
     };
   }
 
   componentDidMount() {
-    const { page, size } = this.state;
+    this.getList(1)
+  }
+
+  pageChange = (value) => {
+    this.getList(value)
+  }
+
+  getList = (page) => {
+    const { size } = this.state;
     this.setState({
       loading: true
     });
@@ -27,12 +34,13 @@ export default class Member extends Component {
         if (res.code === 200) {
           this.setState({
             dataSource: res.data.list || [],
+            total: res.data.total
           })
         }
       }).finally(() => {
-        this.setState({
-          loading: false
-        })
+      this.setState({
+        loading: false
+      })
     })
   }
 
@@ -43,15 +51,19 @@ export default class Member extends Component {
   }
 
   render() {
+
+    const { dataSource, loading, total} = this.state;
+
     return (
       <div className="login-page" >
-        <Table dataSource={this.state.dataSource}
-               loading={this.state.loading}>
+        <Table dataSource={dataSource}
+               loading={loading}>
           <Table.Column title="Id" dataIndex="id"/>
           <Table.Column title="昵称" dataIndex="nickname" />
           <Table.Column title="时间" dataIndex="register_time"/>
           <Table.Column title="头像" dataIndex="avatar" cell={this.avatarRender} />
         </Table>
+        <Pagination defaultCurrent={1} onChange={this.pageChange} total={total} />
       </div>
     );
   }
