@@ -174,6 +174,11 @@ const asideMenuConfig = [
     name: '会员列表',
     path: '/member',
     icon: 'result',
+  },
+  {
+    name: '相册列表',
+    path: '/gallery',
+    icon: 'result',
   }
 ];
 

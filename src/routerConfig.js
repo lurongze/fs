@@ -29,6 +29,7 @@ import ServerError from './pages/ServerError';
 import Forbidden from './pages/Forbidden';
 import Empty from './pages/Empty';
 import Member from  './pages/Member';
+import Gallery from './pages/Gallery';
 
 const routerConfig = [
   {
@@ -62,6 +63,11 @@ const routerConfig = [
     path: '/member',
     layout: HeaderAsideFooterLayout,
     component: Member
+  },
+  {
+    path: '/gallery',
+    layout: HeaderAsideFooterLayout,
+    component: Gallery
   },
   {
     path: '/front',
