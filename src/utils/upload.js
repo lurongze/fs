@@ -15,7 +15,7 @@ let COSObject = new COS({
 function saveToCOS(object, key = 'testbase64', fileType = '.jpg') {
 
   return new Promise((resolve, reject) => {
-    COSObject.sliceUploadFile({
+    COSObject.putObject({
       Bucket: 'wewechat-1252599784',
       Region: 'ap-guangzhou',
       Key: key + fileType,
