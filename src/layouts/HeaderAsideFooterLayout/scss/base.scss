@@ -7,6 +7,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.card-bg {
+  background-color: rgb(255, 255, 255);
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 .ice-design-header-aside-footer-layout-#{$theme} {
   .logo {
     max-width: 340px;

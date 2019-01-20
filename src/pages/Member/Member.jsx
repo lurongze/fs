@@ -68,7 +68,7 @@ export default class Member extends Component {
     const { dataSource, loading, total} = this.state;
 
     return (
-      <div className="card-page" >
+      <div className="card-bg" >
         <Table dataSource={dataSource} loading={loading}>
           <Table.Column title="Id" dataIndex="id"/>
           <Table.Column title="昵称" dataIndex="nickname" />

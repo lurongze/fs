@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Pagination, Button, Upload } from '@alifd/next';
 
-import saveToCOS from '../../utils/upload';
 import request from '../../utils/request';
 
 export default class Gallery extends Component {
@@ -70,31 +69,10 @@ export default class Gallery extends Component {
     )
   }
 
-  uploadFile = async (value) => {
-    console.log('uploadFile', value);
-    await saveToCOS(value);
-  }
-
   render() {
     const { dataSource, loading, total} = this.state;
     return (
-      <div className="card-page">
-
-
-        <Upload
-          listType="image"
-          action="http://127.0.0.1:8088/upload"
-          accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-          withCredentials={false}
-          formatter={(res) => {
-            // 函数里面根据当前服务器返回的响应数据
-            // 重新拼装符合组件要求的数据格式
-            console.log('res', res)
-            return res.data
-          }}
-        >
-          <Button type="primary" style={{margin: '0 0 10px'}}>Upload File</Button>
-        </Upload>
+      <div className="card-bg">
 
         <Table dataSource={dataSource} loading={loading}>
           <Table.Column title="Id" dataIndex="id"/>

@@ -30,6 +30,7 @@ import Forbidden from './pages/Forbidden';
 import Empty from './pages/Empty';
 import Member from  './pages/Member';
 import Gallery from './pages/Gallery';
+import EditorGallery from './pages/Gallery/editor/EditorGallery'
 
 const routerConfig = [
   {
@@ -68,6 +69,11 @@ const routerConfig = [
     path: '/gallery',
     layout: HeaderAsideFooterLayout,
     component: Gallery
+  },
+  {
+    path: '/gallery-editor',
+    layout: HeaderAsideFooterLayout,
+    component: EditorGallery
   },
   {
     path: '/front',

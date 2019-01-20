@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Button, Form, Radio } from '@alifd/next';
+import { Table, Pagination, Button, Form, Radio, Input } from '@alifd/next';
+import Uploader  from '../../../components/Uploader';
 
-import request from '../../utils/request';
 
 const FormItem = Form.Item;
 
@@ -40,8 +40,11 @@ export default class EditorGallery extends Component {
   render() {
     const { dataSource, loading, total, categories, selectCategory} = this.state;
     return (
-      <div className="card-page">
+      <div className="card-bg">
         <Form style={{width: '60%'}} >
+          <FormItem label="图片">
+            <Uploader />
+          </FormItem>
           <FormItem label="分类:">
             <Radio.Group dataSource={categories} value={selectCategory} onChange={this.radioChange} />
           </FormItem>
