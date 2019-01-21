@@ -55,8 +55,8 @@ export default class Gallery extends Component {
   userRender = (value, index, record) => {
     return (
       <React.Fragment>
-        <img src={record.avatar} style={{display: 'block', width: '30px', height: '30px'}} />
-        <text>{record.nickname}</text>
+        <img src={record.authorAvatar} style={{display: 'block', width: '30px', height: '30px'}} />
+        <p>{record.authorName}</p>
       </React.Fragment>
     )
   }

@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Button, Upload } from '@alifd/next';
+import { Upload } from '@alifd/next';
+import request from '../utils/request';
 
 export default class Gallery extends Component {
 
   static displayName = 'Uploader';
 
   static defaultProps = {
-    limit: 1,
-    title: 'Upload File',
-    action: 'action',
-    listType: '',
+    limit: 3,
+    title: '上传图片',
+    action: 'http://127.0.0.1:8088/upload',
+    listType: 'card',
     accept: 'image/png, image/jpg, image/jpeg, image/gif, image/bmp',
     withCredentials: false,
     formatter: (res) => {
@@ -22,32 +23,64 @@ export default class Gallery extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
-      dataSource: [],
-      size: 20
+      files: []
     };
   }
 
   componentDidMount() {
   }
 
+  onSuccess = (res, files) => {
+    this.setState({
+      files
+    })
+  }
+
+  onRemove = (res) => {
+
+    this.removeFromServer(res.response);
+
+    const files = this.state.files.filter((item) => {
+      return item.url !== res.url;
+    })
+    this.setState({
+      files
+    })
+  }
+
+  removeFromServer = (data) => {
+    request.delete(`/upload/${data.id}`);
+  }
+
+  getFiles = () => {
+    return this.state.files.map((item) => {
+      return {
+        id: item.response.id,
+        url: item.response.url
+      }
+    })
+  }
 
   render() {
-    const { dataSource, loading, total} = this.state;
-    const { title, action, accept, withCredential, formatter, listType, limit } = this.props;
+    const { files } = this.state;
+    const { defaultValue, title, action, accept, withCredentials, formatter, listType, limit } = this.props;
     return (
-      <React.Fragment>
-        <Upload
-          multiple
+        <Upload.Card
+          defaultValue={defaultValue}
+          multiple={limit > 1}
           listType={listType}
           action={action}
           accept={accept}
-          withCredentials={withCredential}
+          withCredentials={withCredentials}
           formatter={formatter}
+          limit={limit}
+          onSuccess={this.onSuccess}
+          onRemove={this.onRemove}
         >
-          <Button type="primary" style={{margin: '0 0 10px'}}>{title}</Button>
-        </Upload>
-      </React.Fragment>
+          <div className="next-upload-text">
+            {title}({files.length}/{limit}张)
+          </div>
+        </Upload.Card>
     );
   }
 }
