@@ -71,7 +71,7 @@ const routerConfig = [
     component: Gallery
   },
   {
-    path: '/gallery-editor',
+    path: '/gallery-editor/:id',
     layout: HeaderAsideFooterLayout,
     component: EditorGallery
   },

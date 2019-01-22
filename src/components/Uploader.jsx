@@ -7,7 +7,7 @@ export default class Gallery extends Component {
   static displayName = 'Uploader';
 
   static defaultProps = {
-    limit: 3,
+    limit: 100,
     title: '上传图片',
     action: 'http://127.0.0.1:8088/upload',
     listType: 'card',
@@ -27,19 +27,28 @@ export default class Gallery extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value && nextProps.value.length > 0) {
+      this.setState({
+        files: nextProps.value
+      })
+    }
+  }
+
   componentDidMount() {
   }
 
   onSuccess = (res, files) => {
+    console.log('files', files);
     this.setState({
       files
     })
   }
 
   onRemove = (res) => {
+    console.log('onRemove', res, this.state.files);
 
     this.removeFromServer(res.response);
-
     const files = this.state.files.filter((item) => {
       return item.url !== res.url;
     })
@@ -63,13 +72,14 @@ export default class Gallery extends Component {
 
   render() {
     const { files } = this.state;
-    const { defaultValue, title, action, accept, withCredentials, formatter, listType, limit } = this.props;
+    const { defaultValue, title, action, accept, withCredentials, formatter, listType, limit, detailId, authorId } = this.props;
     return (
         <Upload.Card
           defaultValue={defaultValue}
           multiple={limit > 1}
+          value={files}
           listType={listType}
-          action={action}
+          action={`${action}/${detailId}/${authorId}`}
           accept={accept}
           withCredentials={withCredentials}
           formatter={formatter}
