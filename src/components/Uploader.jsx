@@ -8,8 +8,8 @@ export default class Gallery extends Component {
   static defaultProps = {
     limit: 1,
     title: 'Upload File',
-    action: 'action',
-    listType: '',
+    action: 'http://127.0.0.1:8088/upload',
+    listType: 'card',
     accept: 'image/png, image/jpg, image/jpeg, image/gif, image/bmp',
     withCredentials: false,
     formatter: (res) => {
@@ -34,20 +34,17 @@ export default class Gallery extends Component {
 
   render() {
     const { dataSource, loading, total} = this.state;
-    const { title, action, accept, withCredential, formatter, listType, limit } = this.props;
+    const { title, action, accept, withCredentials, formatter, listType, limit } = this.props;
     return (
-      <React.Fragment>
-        <Upload
-          multiple
-          listType={listType}
-          action={action}
-          accept={accept}
-          withCredentials={withCredential}
-          formatter={formatter}
-        >
-          <Button type="primary" style={{margin: '0 0 10px'}}>{title}</Button>
-        </Upload>
-      </React.Fragment>
+      <Upload.Card
+        multiple
+        listType={listType}
+        action={action}
+        accept={accept}
+        withCredentials={withCredentials}
+        formatter={formatter}
+        limit={limit}
+      />
     );
   }
 }
