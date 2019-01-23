@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Button, Upload } from '@alifd/next';
+import { Upload } from '@alifd/next';
+import request from '../utils/request';
 
 export default class Gallery extends Component {
 
   static displayName = 'Uploader';
 
   static defaultProps = {
-    limit: 1,
-    title: 'Upload File',
+    limit: 100,
+    title: '上传图片',
     action: 'http://127.0.0.1:8088/upload',
     listType: 'card',
     accept: 'image/png, image/jpg, image/jpeg, image/gif, image/bmp',
@@ -22,29 +23,74 @@ export default class Gallery extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
-      dataSource: [],
-      size: 20
+      files: []
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value && nextProps.value.length > 0) {
+      this.setState({
+        files: nextProps.value
+      })
+    }
   }
 
   componentDidMount() {
   }
 
+  onSuccess = (res, files) => {
+    console.log('files', files);
+    this.setState({
+      files
+    })
+  }
+
+  onRemove = (res) => {
+    console.log('onRemove', res, this.state.files);
+
+    this.removeFromServer(res.response);
+    const files = this.state.files.filter((item) => {
+      return item.url !== res.url;
+    })
+    this.setState({
+      files
+    })
+  }
+
+  removeFromServer = (data) => {
+    request.delete(`/upload/${data.id}`);
+  }
+
+  getFiles = () => {
+    return this.state.files.map((item) => {
+      return {
+        id: item.response.id,
+        url: item.response.url
+      }
+    })
+  }
 
   render() {
-    const { dataSource, loading, total} = this.state;
-    const { title, action, accept, withCredentials, formatter, listType, limit } = this.props;
+    const { files } = this.state;
+    const { defaultValue, title, action, accept, withCredentials, formatter, listType, limit, detailId, authorId } = this.props;
     return (
-      <Upload.Card
-        multiple
-        listType={listType}
-        action={action}
-        accept={accept}
-        withCredentials={withCredentials}
-        formatter={formatter}
-        limit={limit}
-      />
+        <Upload.Card
+          defaultValue={defaultValue}
+          multiple={limit > 1}
+          value={files}
+          listType={listType}
+          action={`${action}/${detailId}/${authorId}`}
+          accept={accept}
+          withCredentials={withCredentials}
+          formatter={formatter}
+          limit={limit}
+          onSuccess={this.onSuccess}
+          onRemove={this.onRemove}
+        >
+          <div className="next-upload-text">
+            {title}({files.length}/{limit}张)
+          </div>
+        </Upload.Card>
     );
   }
 }

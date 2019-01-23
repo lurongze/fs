@@ -182,7 +182,7 @@ const asideMenuConfig = [
   },
   {
     name: '相册编辑',
-    path: '/gallery-editor',
+    path: '/gallery-editor/0',
     icon: 'result',
   }
 ];

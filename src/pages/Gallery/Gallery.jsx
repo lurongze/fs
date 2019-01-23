@@ -52,19 +52,24 @@ export default class Gallery extends Component {
     console.log('removeById', id);
   }
 
+  editorGallery = (id) => {
+    this.props.history.push(`/gallery-editor/${id}`)
+  }
+
   userRender = (value, index, record) => {
     return (
       <React.Fragment>
-        <img src={record.avatar} style={{display: 'block', width: '30px', height: '30px'}} />
-        <text>{record.nickname}</text>
+        <img src={record.authorAvatar} style={{display: 'block', width: '30px', height: '30px'}} />
+        <p>{record.authorName}</p>
       </React.Fragment>
     )
   }
 
-  actionsRender = (value, index, record) => {
+  actionsRender = (value) => {
     return (
       <React.Fragment>
         <Button type='primary' onClick={this.removeById.bind(this, value)}>删除</Button>
+        <Button type='primary' onClick={this.editorGallery.bind(this, value)}>编辑</Button>
       </React.Fragment>
     )
   }

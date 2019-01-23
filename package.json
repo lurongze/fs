@@ -26,6 +26,7 @@
     "foundation-symbol": "^0.1.0",
     "immutable": "^3.8.2",
     "is-hotkey": "^0.1.2",
+    "loadsh": "^0.0.3",
     "prop-types": "^15.5.8",
     "react-document-title": "^2.0.3",
     "react-router": "^4.2.0",
