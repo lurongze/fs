@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Table, Pagination, Button, Upload } from '@alifd/next';
 
 import request from '../../utils/request';
@@ -48,10 +49,6 @@ export default class Gallery extends Component {
     })
   }
 
-  removeById = (id) => {
-    console.log('removeById', id);
-  }
-
   editorGallery = (id) => {
     this.props.history.push(`/gallery-editor/${id}`)
   }
@@ -68,7 +65,6 @@ export default class Gallery extends Component {
   actionsRender = (value) => {
     return (
       <React.Fragment>
-        <Button type='primary' onClick={this.removeById.bind(this, value)}>删除</Button>
         <Button type='primary' onClick={this.editorGallery.bind(this, value)}>编辑</Button>
       </React.Fragment>
     )
@@ -78,7 +74,9 @@ export default class Gallery extends Component {
     const { dataSource, loading, total} = this.state;
     return (
       <div className="card-bg">
-
+        <Link to={'/gallery-editor/0'}>
+          <Button type={'primary'}>新增</Button>
+        </Link>
         <Table dataSource={dataSource} loading={loading}>
           <Table.Column title="Id" dataIndex="id"/>
           <Table.Column title="发布者" cell={this.userRender} />

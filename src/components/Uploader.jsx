@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Upload } from '@alifd/next';
 import request from '../utils/request';
 
-export default class Gallery extends Component {
+export default class Uploader extends Component {
 
   static displayName = 'Uploader';
 

@@ -179,11 +179,6 @@ const asideMenuConfig = [
     name: '相册列表',
     path: '/gallery',
     icon: 'result',
-  },
-  {
-    name: '相册编辑',
-    path: '/gallery-editor/0',
-    icon: 'result',
   }
 ];
 

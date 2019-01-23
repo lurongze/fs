@@ -32,8 +32,8 @@ export default class EditorGallery extends Component {
     })
     request.get(`/gallery/detail-for-update/${id}`).then((res) => {
       if (res.code === 200) {
-
-        const pictureItems = res.data.pictureItems.map((item) => {
+        const pictureItemsData = res.data.pictureItems || [];
+        const pictureItems = pictureItemsData.map((item) => {
           return {
             id: item.id,
             uid: item.id,
@@ -63,9 +63,9 @@ export default class EditorGallery extends Component {
     })
   }
 
-  handleSubmit = (data) => {
-    console.log('data', data)
-    const files = this.refs.uploader.getFiles();
+  handleSubmit = (data, validate) => {
+    console.log('handleSubmit', validate);
+    const files = this.refs.uploader.getFiles() || [];
     const covers = files.filter((item, index) => {
       return index < 9;
     }).map((item) => {
@@ -76,30 +76,38 @@ export default class EditorGallery extends Component {
     })
 
     const formData = {
-      ...data, ...{ covers: covers.join(','), ids: ids.join(',')}
+      ...data, ...{ covers: covers.join(',')}
     }
 
     console.log('formData', formData);
-    // this.setState({
-    //   loading: true
-    // });
-    // request.put('/gallery', formData).then((res) => {
-    //   if (res.code === 200 ) {
-    //     Message.success('保存成功');
-    //     this.props.history.push('/gallery');
-    //   } else {
-    //     Message.error('保存失败');
-    //   }
-    // }).finally(() => {
-    //   this.setState({
-    //     loading: false
-    //   });
-    // });
+    this.setState({
+      loading: true
+    });
+    request.post('/gallery', formData).then((res) => {
+      if (res.code === 200 ) {
+        Message.success('保存成功');
+        this.props.history.push('/gallery');
+      } else {
+        Message.error('保存失败');
+      }
+    }).finally(() => {
+      this.setState({
+        loading: false
+      });
+    });
   }
 
   radioChange = (selectCategory) => {
     this.setState({
       selectCategory
+    })
+  }
+
+  titleChange = (value) => {
+    const { detailData } = this.state;
+    detailData.title = value
+    this.setState({
+      detailData
     })
   }
 
@@ -114,13 +122,18 @@ export default class EditorGallery extends Component {
               <Uploader ref={'uploader'} value={pictureItems} detailId={detailData.id} authorId={detailData.author}/>
             </FormItem>
             <FormItem label="分类:">
-              <Radio.Group dataSource={categories} value={selectCategory} name="category" onChange={this.radioChange} />
+              <Radio.Group dataSource={categories} value={selectCategory} name="category" onChange={this.radioChange}  />
             </FormItem>
-            <FormItem label="描述:" required >
-              <Input.TextArea name="title" placeholder="输入描述" value={detailData.title || ''}/>
+            <FormItem label="描述:" required requiredMessage={'描述为必填'}>
+              <Input.TextArea name="title" placeholder="输入描述" value={detailData.title || ''} onChange={this.titleChange}/>
             </FormItem>
-            <FormItem label=" ">
-              <Form.Submit onClick={this.handleSubmit}>提交</Form.Submit>
+            <div style={{display: 'none'}}>
+              <FormItem label="id:" required >
+                <Input name="id" value={detailData.id || ''}/>
+              </FormItem>
+            </div>
+            <FormItem label="">
+              <Form.Submit validate onClick={this.handleSubmit}>提交</Form.Submit>
             </FormItem>
           </Form>
         </Loading>
